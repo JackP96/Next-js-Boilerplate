@@ -39,7 +39,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/public/*": ["./public/*"]
+      "@/public/*": ["./public/*"],
+      "@/types": ["./src/types/index.ts"]
     },
 
     // Editor support
@@ -54,7 +55,6 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".storybook/*.ts",
     ".next/types/**/*.ts",
     "src/libs/Env.mjs"
   ]

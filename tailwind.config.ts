@@ -3,6 +3,12 @@ import type { Config } from 'tailwindcss';
 export default {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    // Overriding fontFamily to use @next/font loaded families
+    fontFamily: {
+      mono: 'var(--font-mono)',
+      sans: 'var(--font-sans)',
+      serif: 'var(--font-serif)',
+    },
     fontSize: {
       xs: '0.75rem',
       sm: '0.875rem',

@@ -18,17 +18,10 @@
     "next/dist/client/router.d.ts"
   ],
   "typescript.preferences.preferTypeOnlyAutoImports": true, // Prefer type-only imports
-  "jest.runMode": {
-    "type": "on-save",
-    "testFileOnly": true,
-    "coverage": true
-  }, // Configure Jest extension
   // Multiple language settings for json and jsonc files
   "[json][jsonc][yaml]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "prettier.ignorePath": ".gitignore", // Don't run prettier for files listed in .gitignore
-  "i18n-ally.localesPaths": ["src/locales"],
-  "i18n-ally.keystyle": "nested"
+  "prettier.ignorePath": ".gitignore" // Don't run prettier for files listed in .gitignore
 }

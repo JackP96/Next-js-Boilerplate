@@ -2,9 +2,6 @@
 import { withSentryConfig } from '@sentry/nextjs';
 import './src/libs/Env.mjs';
 import withBundleAnalyzer from '@next/bundle-analyzer';
-import withNextIntl from 'next-intl/plugin';
-
-const withNextIntlConfig = withNextIntl('./src/libs/i18n.ts');
 
 const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -12,30 +9,44 @@ const bundleAnalyzer = withBundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 export default withSentryConfig(
-  bundleAnalyzer(
-    withNextIntlConfig({
-      eslint: {
-        dirs: ['.'],
+  bundleAnalyzer({
+    logging: {
+      fetches: {
+        fullUrl: true,
       },
-      poweredByHeader: false,
-      reactStrictMode: true,
-      experimental: {
-        // Related to Pino error with RSC: https://github.com/orgs/vercel/discussions/3150
-        serverComponentsExternalPackages: ['pino'],
-      },
-      webpack: (config) => {
-        // config.externals is needed to resolve the following errors:
-        // Module not found: Can't resolve 'bufferutil'
-        // Module not found: Can't resolve 'utf-8-validate'
-        config.externals.push({
-          bufferutil: 'bufferutil',
-          'utf-8-validate': 'utf-8-validate',
-        });
+    },
+    images: {
+      remotePatterns: [{ hostname: 'cdn.sanity.io' }],
+    },
+    swcMinify: true,
+    poweredByHeader: false,
+    reactStrictMode: true,
+    typescript: {
+      // Set this to false if you want production builds to abort if there's type errors
+      ignoreBuildErrors: process.env.VERCEL_ENV === 'production',
+    },
+    eslint: {
+      dirs: ['.'],
+      /// Set this to false if you want production builds to abort if there's lint errors
+      ignoreDuringBuilds: process.env.VERCEL_ENV === 'production',
+    },
+    experimental: {
+      // Related to Pino error with RSC: https://github.com/orgs/vercel/discussions/3150
+      serverComponentsExternalPackages: ['pino'],
+      urlImports: ['https://themer.sanity.build/'],
+    },
+    webpack: (config) => {
+      // config.externals is needed to resolve the following errors:
+      // Module not found: Can't resolve 'bufferutil'
+      // Module not found: Can't resolve 'utf-8-validate'
+      config.externals.push({
+        bufferutil: 'bufferutil',
+        'utf-8-validate': 'utf-8-validate',
+      });
 
-        return config;
-      },
-    }),
-  ),
+      return config;
+    },
+  }),
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
